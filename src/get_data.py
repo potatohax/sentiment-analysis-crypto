@@ -9,9 +9,12 @@ API_KEY = os.environ.get("myapi")
 req_url = os.environ.get("request_url")
 
 req = requests.get(req_url)
-title = req.json()["results"][0]["title"]
+title = len(req.json()["results"][0]["title"])
 
-print(sa.preprocess(title))
+result = sa.analyze_text(title)
+
+print(title)
+
 
 
 

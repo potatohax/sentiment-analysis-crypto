@@ -12,15 +12,16 @@ def preprocess(text):
         new_text.append(t)
     return " ".join(new_text)
 
-def sentiment_analysis(text):
+def analyze_text(input):
     MODEL = f"cardiffnlp/twitter-roberta-base-sentiment-latest"
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
     config = AutoConfig.from_pretrained(MODEL)
     # PT
     model = AutoModelForSequenceClassification.from_pretrained(MODEL)
     #model.save_pretrained(MODEL)
-    text = "Will Ethereum staking help raise ETH’s prices?"
-    text = preprocess(text)
+    # text = "Will Ethereum staking help raise ETH’s prices?"
+    
+    text = preprocess(input)
     encoded_input = tokenizer(text, return_tensors='pt')
     output = model(**encoded_input)
     scores = output[0][0].detach().numpy()
@@ -33,7 +34,8 @@ def sentiment_analysis(text):
     # output = model(encoded_input)
     # scores = output[0][0].numpy()
     # scores = softmax(scores)
-    # Print labels and scores
+    
+    # # Print labels and scores
     ranking = np.argsort(scores)
     ranking = ranking[::-1]
     for i in range(scores.shape[0]):
